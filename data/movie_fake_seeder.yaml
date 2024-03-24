@@ -1,0 +1,5 @@
+- model: movie.models.movie.Title
+  pk: 1
+  fields:
+    first_name: John
+    last_name: Lennon
