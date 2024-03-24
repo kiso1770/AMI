@@ -1,0 +1,101 @@
+version: '3.9'
+
+networks:
+  elastic:
+    name: elastic
+    driver: bridge
+
+services:
+  redis:
+    image: redis:alpine
+    env_file:
+      - '.env'
+    ports:
+      - 6379:6379
+    container_name: redis
+    networks:
+      - elastic
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1200M
+        reservations:
+          cpus: '2'
+          memory: 1024M
+
+  postgresql:
+    image: 'postgres:16'
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=psql
+      - POSTGRES_USER=postgres
+      - POSTGRES_HOST_AUTH_METHOD=md5
+#      - PGDATA=/var/lib/postgresql/data/pgdata
+#    volumes:
+#      - type: bind
+#        source: ./data/pgdata
+#        target: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2048M
+        reservations:
+          cpus: '2'
+          memory: 2048M
+    networks:
+      - elastic
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4:7.2
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "animafin@project.com"
+      PGADMIN_DEFAULT_PASSWORD: "animafin"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+#    volumes:
+#      - pgadmin-data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1G
+    networks:
+      - elastic
+
+  elasticsearch:
+    image: 'elasticsearch:8.12.2'
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=false
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    env_file:
+      - '.env'
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    ports:
+      - target: 9200
+        published: 9200
+    networks:
+      - elastic
+
+  kibana:
+    image: kibana:8.5.1
+    depends_on:
+      - elasticsearch
+    ports:
+      - target: 5601
+        published: 5601
+    networks:
+      - elastic
+
+volumes:
+  es_data:
+    driver: local

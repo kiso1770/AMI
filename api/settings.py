@@ -9,6 +9,8 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+import datetime
+import os
 
 from pathlib import Path
 from environ import Env
@@ -47,9 +49,12 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     # 'django.contrib.sessions',
-    # 'django.contrib.messages',
+    'django.contrib.messages',
     # 'django.contrib.staticfiles',
     'rest_framework',
+    # 'django_minio_backend',
+    # 'user.apps.UsersConfig',
+    'user',
     'movie',
 ]
 
@@ -141,3 +146,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# MINIO_CONSISTENCY_CHECK_ON_START = True
