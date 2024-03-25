@@ -27,7 +27,7 @@ env = Env(
     DB_PORT=(int, 5432),
 )
 
-env.read_env(BASE_DIR / '.env')
+env.read_env(BASE_DIR / '..venv')
 
 
 # Quick-start development settings - unsuitable for production
