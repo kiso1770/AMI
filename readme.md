@@ -9,7 +9,7 @@ sudo apt update && sudo apt install python3.12 python3-pip
 
 ### Установка окружения
 ```shell
-cp .env.dist .env
+cp .env.exemple .env
 pip install -r requirements.txt
 ```
 
@@ -17,6 +17,7 @@ pip install -r requirements.txt
 ```bash
 sudo dockerd
 sudo docker compose -f docker-compose-local-services.yml up
+docker build -t ami .
 ```
 Если нужно накатить из бэкапа, раскоментить в docker-compose-local-services.yml
 ```

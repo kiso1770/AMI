@@ -19,11 +19,13 @@ from environ import Env
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = Env(
-    DEBUG=(bool, False),
+    DEBUG=(bool, True),
     SECRET_KEY=str,
-    ALLOWED_HOSTS=list,
-    DB_NAME=str,
-    DB_HOST=str,
+    ALLOWED_HOSTS=(list, ['localhost','127.0.0.1','0.0.0.0','localhost:3000']),
+    DB_NAME=(str, 'postgres'),
+    DB_USER=(str, 'postgres'),
+    DB_PASS=(str, 'psql'),
+    DB_HOST=(str, 'localhost'),
     DB_PORT=(int, 5432),
 )
 
